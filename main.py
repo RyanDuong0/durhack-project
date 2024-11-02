@@ -6,7 +6,7 @@ from game import Game
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 1024, 768
+WIDTH, HEIGHT = 800, 600
 FPS = 60
 
 # Colors

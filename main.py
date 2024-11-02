@@ -1,12 +1,11 @@
 import pygame
 import sys
-from game import Game
 
 # Initialize Pygame
 pygame.init()
 
 # Constants
-WIDTH, HEIGHT = 1024, 768
+WIDTH, HEIGHT = 800, 600
 FPS = 60
 
 # Colors
@@ -38,7 +37,7 @@ def main():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    Game()  # Placeholder for starting the game
+                    print("Game starts!")  # Placeholder for starting the game
                     # You can call the main game function here
 
         draw_start_screen()

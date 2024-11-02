@@ -41,9 +41,9 @@ while running:
     keys = pygame.key.get_pressed()
 
     # Move left and right
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
         character_x -= 5
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
         character_x += 5
 
     # Collision and transition logic

@@ -38,8 +38,8 @@ def main():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    Game()  # Placeholder for starting the game
-                    # You can call the main game function here
+                    game = Game()
+                    game.run()
 
         draw_start_screen()
         clock.tick(FPS)

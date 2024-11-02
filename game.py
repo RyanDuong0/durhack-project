@@ -43,8 +43,8 @@ class Game:
             self.clock.tick(self.FPS)
 
     def start_game(self):
-        print("Game starts!")  # Placeholder for starting the main game logic
-        # Add your main game loop and logic here
+        print("Game starts!")
+
 
 
 if __name__ == "__main__":

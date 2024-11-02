@@ -1,15 +1,52 @@
 import pygame
 import math
 
+WIDTH, HEIGHT = 800, 600
+FPS = 60
+
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+BUTTON_COLOR = (30, 144, 255)  # Dodger Blue
+BUTTON_HOVER_COLOR = (70, 130, 180)  # Steel Blue
+SLIDER_COLOR = (100, 100, 255)  # Light blue for the slider
+
+font_size = 50  # Default font size
+
+class Button:
+    def __init__(self, text, x, y, width, height, bg_color, hover_color):
+        self.font = pygame.font.Font(None, font_size)
+        self.text = text
+        self.rect = pygame.Rect(x, y, width, height)
+        self.bg_color = bg_color
+        self.hover_color = hover_color
+        self.update_text()  # Initialize text surface
+
+    def update_text(self):
+        # Update the text surface whenever font size changes
+        self.text_surf = self.font.render(self.text, True, WHITE)
+        self.text_rect = self.text_surf.get_rect(center=self.rect.center)
+
+    def draw(self, surface):
+        # Check if the mouse is over the button for hover effect
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(surface, self.hover_color, self.rect)
+        else:
+            pygame.draw.rect(surface, self.bg_color, self.rect)
+            surface.blit(self.text_surf, self.text_rect)
+
+    def is_clicked(self, event):
+        return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
+
 class SolarSystem:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 800))
+        self.screen = pygame.display.set_mode((1200, 800))
         pygame.display.set_caption("Solar System")
 
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
-        self.sun_pos = (400, 400)
+        self.sun_pos = (600, 400)
         self.clock = pygame.time.Clock()
 
         # Font settings
@@ -28,6 +65,9 @@ class SolarSystem:
         ]
 
         self.angles = [0] * len(self.planets)
+
+        #create buttons
+        self.back_button = Button("BACK", WIDTH // 2 - 100, HEIGHT // 2 + 150, 200, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
 
     def draw_planet(self, x, y, color, radius, name, rings=False):
         pygame.draw.circle(self.screen, color, (int(x), int(y)), radius)
@@ -61,6 +101,8 @@ class SolarSystem:
                     running = False
 
         pygame.quit()
+
+
 
 if __name__ == "__main__":
     solar_system = SolarSystem()

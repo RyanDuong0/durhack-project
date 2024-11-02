@@ -125,64 +125,56 @@ def draw_settings_screen():
     # Draw the magnifier instruction
     magnifier_text = font.render("Press M to magnify", True, WHITE)
     screen.blit(magnifier_text, (WIDTH // 2 + 65, HEIGHT // 2 + 40))
-
-    if back_button.visible:
-        back_button.draw(screen)
-    back_button.visible = True
-
     pygame.display.flip()
+
 
 def main():
     global settings_active, font_size
     clock = pygame.time.Clock()
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            # Check button clicks
-            if start_button.is_clicked(event):
-                solar_system = SolarSystem()
-                solar_system.run()
+            # Check button clicks for the main screen
+            if not settings_active:
+                if start_button.is_clicked(event):
+                    solar_system = SolarSystem()
+                    solar_system.run()
 
-            if quit_button.is_clicked(event):
-                pygame.quit()
-                sys.exit()
+                if quit_button.is_clicked(event):
+                    pygame.quit()
+                    sys.exit()
 
-            if settings_button.is_clicked(event):
-                settings_active = True
-                back_button.set_visible(True)
-                draw_settings_screen()
+                if settings_button.is_clicked(event):
+                    # Show settings and hide the settings button
+                    settings_active = True
+                    settings_button.enabled = False  # Disable settings button
+                    back_button.set_visible(True)  # Show back button
 
             # If in settings mode
             if settings_active:
-                settings_button.enabled = False
-                start_button.enabled = False
-                quit_button.enabled = False
-
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:  # Go back to start screen
                         settings_active = False
-                        back_button.set_visible(False)  # Hide the back button
-                        start_button.enabled = True  # Re-enable buttons
-                        quit_button.enabled = True
+                        settings_button.enabled = True  # Re-enable settings button
+                        back_button.set_visible(False)  # Hide back button
+
                     elif event.key == pygame.K_m:  # Magnify text size
                         font_size += 5
                         for button in [start_button, quit_button]:  # Update buttons with new font size
-                            button.update_text()  # Update button text surfaces with new font size
-                        font = pygame.font.Font(None, font_size)  # Update font with new size
+                            button.update_text()
+                        font = pygame.font.Font(None, font_size)
 
-            if back_button.is_clicked(event):
-                settings_active = False
-
-            # Update slider value if the mouse is dragged
-            if settings_active and event.type == pygame.MOUSEMOTION:
-                if event.buttons[0]:  # Check if the left mouse button is held down
+                # Update slider value if the mouse is dragged
+                if event.type == pygame.MOUSEMOTION and event.buttons[0]:  # Left mouse button held down
                     slider.update(event.pos[0])
 
+        # Draw screens based on the current state
         if settings_active:
-            font_size = slider.update(slider.handle_rect.centerx)  # Get updated font size from slider
+            font_size = slider.update(slider.handle_rect.centerx)  # Update font size from slider
             draw_settings_screen()  # Draw the settings screen
         else:
             draw_start_screen()  # Draw the main screen

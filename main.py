@@ -28,7 +28,7 @@ background_image = pygame.image.load("Image/background.jpg")  # Path to your bac
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # Resize to fit screen
 
 try:
-    cog_image = pygame.image.load("Image/6687755.png")  # Path to your cog image
+    cog_image = pygame.image.load("Image/download.png")  # Path to your cog image
     cog_image = pygame.transform.scale(cog_image, (50, 50))  # Scale cog image to 50x50 pixels
 except pygame.error as e:
     print(f"Unable to load cog image: {e}")

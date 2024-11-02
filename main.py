@@ -1,5 +1,6 @@
 import pygame
 import sys
+from game import Game
 
 # Initialize Pygame
 pygame.init()
@@ -37,7 +38,7 @@ def main():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    print("Game starts!")  # Placeholder for starting the game
+                    Game()  # Placeholder for starting the game
                     # You can call the main game function here
 
         draw_start_screen()

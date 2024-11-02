@@ -67,7 +67,7 @@ class SolarSystem:
         self.angles = [0] * len(self.planets)
 
         #create buttons
-        self.back_button = Button("BACK", 10, HEIGHT + 140,200,50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
+        self.back_button = Button("Back", 10, HEIGHT + 140,200,50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
 
     def draw_planet(self, x, y, color, radius, name, rings=False):
         pygame.draw.circle(self.screen, color, (int(x), int(y)), radius)
@@ -100,6 +100,8 @@ class SolarSystem:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if self.back_button.is_clicked(event):
+                    return
 
         pygame.quit()
 

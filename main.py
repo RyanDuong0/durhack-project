@@ -17,7 +17,7 @@ BUTTON_HOVER_COLOR = (70, 130, 180)  # Steel Blue
 SLIDER_COLOR = (100, 100, 255)  # Light blue for the slider
 
 # Set up the screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((1200, 800))
 pygame.display.set_caption("Space Game - Start Screen")
 
 # Load assets
@@ -28,10 +28,10 @@ title_text = font.render("Space Adventure", True, WHITE)
 
 # Load background image
 background_image = pygame.image.load("Image/background.jpg")  # Path to your background image
-background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # Resize to fit screen
+background_image = pygame.transform.scale(background_image, (1200, 800))  # Resize to fit screen
 
 try:
-    cog_image = pygame.image.load("Image/download.png")  # Path to your cog image
+    cog_image = pygame.image.load("Image/6687755.png")  # Path to your cog image
     cog_image = pygame.transform.scale(cog_image, (50, 50))  # Scale cog image to 50x50 pixels
 except pygame.error as e:
     print(f"Unable to load cog image: {e}")
@@ -42,6 +42,7 @@ except pygame.error as e:
 class Button:
     def __init__(self, text, x, y, width, height, bg_color, hover_color):
         self.text = text
+        self.enabled = True
         self.rect = pygame.Rect(x, y, width, height)
         self.bg_color = bg_color
         self.hover_color = hover_color
@@ -62,7 +63,10 @@ class Button:
         surface.blit(self.text_surf, self.text_rect)
 
     def is_clicked(self, event):
-        return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
+        return self.enabled and event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
+
+    def set_visible(self, visible):
+        self.visible = visible
 
 # Slider class for text size
 class Slider:
@@ -87,10 +91,11 @@ class Slider:
         return self.value
 
 # Initialize buttons and slider
-start_button = Button("Start", WIDTH // 2 - 100, HEIGHT // 2, 200, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
-quit_button = Button("Quit", WIDTH // 2 - 100, HEIGHT // 2 + 70, 200, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
-settings_button = Button("", 10, HEIGHT - 60, 50, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)  # Only for image
-slider = Slider(WIDTH // 2 - 150, HEIGHT // 2, 300)  # Slider for text size
+start_button = Button("Start", WIDTH - 290, HEIGHT // 2, 200, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
+quit_button = Button("Quit", WIDTH - 290, HEIGHT // 2 + 70, 200, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
+settings_button = Button("", 10, HEIGHT + 140, 50, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)  # Only for image
+slider = Slider(WIDTH // 2 + 71, HEIGHT // 2, 300)  # Slider for text size
+back_button = Button("Back", 10, HEIGHT + 140,200,50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
 
 # Settings state
 settings_active = False
@@ -100,7 +105,7 @@ def draw_start_screen():
     screen.blit(background_image, (0, 0))  # Draw the background image
     font = pygame.font.Font(None, font_size)  # Update the main font for the title
     title_text = font.render("Space Adventure", True, WHITE)  # Update title text
-    screen.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, HEIGHT // 3))  # Center the title
+    screen.blit(title_text, (WIDTH // 2 + 73, HEIGHT // 3))  # Center the title
     start_button.draw(screen)  # Draw the "Start" button
     quit_button.draw(screen)  # Draw the "Quit" button
     screen.blit(cog_image, (settings_button.rect.x, settings_button.rect.y))  # Draw the cog image
@@ -110,16 +115,20 @@ def draw_settings_screen():
     global font
     screen.fill(BLACK)  # Clear the screen
     settings_text = font.render("Settings", True, WHITE)
-    screen.blit(settings_text, (WIDTH // 2 - settings_text.get_width() // 2, HEIGHT // 3))  # Center the settings title
+    screen.blit(settings_text, (WIDTH // 2 + 145, HEIGHT // 3))  # Center the settings title
 
     # Draw the slider and its label
     slider.draw(screen)
     slider_value_text = font.render(f"Text Size: {slider.value}", True, WHITE)
-    screen.blit(slider_value_text, (WIDTH // 2 - slider_value_text.get_width() // 2, HEIGHT // 2 - 50))
+    screen.blit(slider_value_text, (WIDTH // 2 + 110, HEIGHT // 2 - 50))
 
     # Draw the magnifier instruction
     magnifier_text = font.render("Press M to magnify", True, WHITE)
-    screen.blit(magnifier_text, (WIDTH // 2 - magnifier_text.get_width() // 2, HEIGHT // 2 + 40))
+    screen.blit(magnifier_text, (WIDTH // 2 + 65, HEIGHT // 2 + 40))
+
+    if back_button.visible:
+        back_button.draw(screen)
+    back_button.visible = True
 
     pygame.display.flip()
 
@@ -134,7 +143,6 @@ def main():
 
             # Check button clicks
             if start_button.is_clicked(event):
-                print("Game starts!")  # Placeholder for starting the game
                 solar_system = SolarSystem()
                 solar_system.run()
 
@@ -144,17 +152,29 @@ def main():
 
             if settings_button.is_clicked(event):
                 settings_active = True
+                back_button.set_visible(True)
+                draw_settings_screen()
 
             # If in settings mode
             if settings_active:
+                settings_button.enabled = False
+                start_button.enabled = False
+                quit_button.enabled = False
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:  # Go back to start screen
                         settings_active = False
+                        back_button.set_visible(False)  # Hide the back button
+                        start_button.enabled = True  # Re-enable buttons
+                        quit_button.enabled = True
                     elif event.key == pygame.K_m:  # Magnify text size
                         font_size += 5
                         for button in [start_button, quit_button]:  # Update buttons with new font size
                             button.update_text()  # Update button text surfaces with new font size
                         font = pygame.font.Font(None, font_size)  # Update font with new size
+
+            if back_button.is_clicked(event):
+                settings_active = False
 
             # Update slider value if the mouse is dragged
             if settings_active and event.type == pygame.MOUSEMOTION:

@@ -1,5 +1,6 @@
 import pygame
 import sys
+from models import SolarSystem
 
 # Initialize Pygame
 pygame.init()
@@ -134,6 +135,8 @@ def main():
             # Check button clicks
             if start_button.is_clicked(event):
                 print("Game starts!")  # Placeholder for starting the game
+                solar_system = SolarSystem()
+                solar_system.run()
 
             if quit_button.is_clicked(event):
                 pygame.quit()

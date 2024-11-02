@@ -67,7 +67,7 @@ class SolarSystem:
         self.angles = [0] * len(self.planets)
 
         #create buttons
-        self.back_button = Button("BACK", WIDTH // 2 - 100, HEIGHT // 2 + 150, 200, 50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
+        self.back_button = Button("BACK", 10, HEIGHT + 140,200,50, BUTTON_COLOR, BUTTON_HOVER_COLOR)
 
     def draw_planet(self, x, y, color, radius, name, rings=False):
         pygame.draw.circle(self.screen, color, (int(x), int(y)), radius)
@@ -92,6 +92,7 @@ class SolarSystem:
                 x = self.sun_pos[0] + math.cos(self.angles[i]) * distance
                 y = self.sun_pos[1] + math.sin(self.angles[i]) * distance
                 self.draw_planet(x, y, color, radius, name)
+            self.back_button.draw(self.screen)
 
             pygame.display.flip()
             self.clock.tick(60)

@@ -24,7 +24,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('2D Character Control')
 
 # Create the character instance with fixed dimensions and color from charmodel
-character = Character(WIDTH // 2, HEIGHT - Character.HEIGHT - 50)
+character = Character(WIDTH // 2, HEIGHT - Character.HEIGHT - 120)
 
 # Main loop
 clock = pygame.time.Clock()
@@ -76,8 +76,8 @@ while running:
     # Draw the sand floor
     pygame.draw.rect(screen, sand_color, (0, HEIGHT - 50, WIDTH, 50))  # Sand at the bottom
 
-    # Draw the character using the image
-    screen.blit(character.image, (character.x, character.y))
+    # Draw the spaceman character
+    character.draw(screen)
 
     # Update the display
     pygame.display.flip()

@@ -11,7 +11,6 @@ FPS = 60
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
 
 # Set up the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -22,8 +21,12 @@ font = pygame.font.Font(None, 74)
 title_text = font.render("Space Adventure", True, WHITE)
 start_text = font.render("Press Enter to Start", True, WHITE)
 
+# Load background image
+background_image = pygame.image.load("Image/background.jpg")  # Path to your background image
+background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))  # Resize to fit screen
+
 def draw_start_screen():
-    screen.fill(BLACK)
+    screen.blit(background_image, (0, 0))  # Draw the background image
     screen.blit(title_text, (WIDTH // 2 - title_text.get_width() // 2, HEIGHT // 3))
     screen.blit(start_text, (WIDTH // 2 - start_text.get_width() // 2, HEIGHT // 2))
     pygame.display.flip()

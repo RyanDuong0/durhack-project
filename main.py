@@ -161,6 +161,7 @@ def main():
                         settings_active = False
                         settings_button.enabled = True  # Re-enable settings button
                         back_button.set_visible(False)  # Hide back button
+                        draw_start_screen()
 
                     elif event.key == pygame.K_m:  # Magnify text size
                         font_size += 5

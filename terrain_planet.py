@@ -39,7 +39,7 @@ class TerrainRenderer:
                 glVertex3f(x, 0, z + 1)
         glEnd()
 
-    def render(self):
+    def run(self):
         running = True
         while running:
             for event in pygame.event.get():
@@ -62,4 +62,4 @@ if __name__ == "__main__":
     planet_name = sys.argv[1] if len(sys.argv) > 1 else "earth"  # Default to earth if not specified
     terrain_model_path = os.path.join("Models", f"{planet_name}_terrain.obj")
     renderer = TerrainRenderer(terrain_model_path)
-    renderer.render()
+    renderer.run()

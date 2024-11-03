@@ -210,8 +210,8 @@ class SolarSystem:
 
                 if self.explore_button.is_clicked(event):
                     if self.selected_planet:
-                        terrain_planet = TerrainRenderer()
-                        terrain_planet.render()
+                        terrain_planet = TerrainRenderer("Image/Earth.png")
+                        terrain_planet.run()
 
         pygame.quit()
 
